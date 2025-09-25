@@ -16,6 +16,7 @@ El objetivo es mostrar propiedades destacadas y secciones informativas de manera
 ---
 
 ## 📂 Estructura del proyecto
+```bash
 land-inmobiliaria/
 ├── public/ # Imágenes públicas y favicon
 │ └── images/ # Imágenes de propiedades y hero
@@ -30,3 +31,4 @@ land-inmobiliaria/
 ├── astro.config.mjs # Configuración de Astro
 ├── package.json # Dependencias y scripts
 └── tsconfig.json / etc
+```
