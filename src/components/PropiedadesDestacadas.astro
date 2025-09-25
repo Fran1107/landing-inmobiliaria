@@ -1,0 +1,79 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import PropiedadCard from './PropiedadCard.astro'
+
+interface Props {
+    propiedades: CollectionEntry<'propiedades'>[]
+}
+
+const { propiedades } = Astro.props
+---
+
+<section id="propiedades" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <!-- Header -->
+        <div class="text-center mb-16" data-animate>
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-xl font-medium mb-4">
+                ⭐ Propiedades destacadas
+            </div>
+            <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
+                Nuestras mejores propiedades
+            </h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Selección exclusiva de propiedades premium en las mejores
+                ubicaciones, cuidadosamente elegidas por nuestros expertos
+                inmobiliarios.
+            </p>
+        </div>
+
+        <!-- Properties Grid -->
+        {
+            propiedades.length > 0 ? (
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" data-animate>
+                    {propiedades.map((propiedad, index) => (
+                        <div style={`animation-delay: ${index * 0.1}s`}>
+                            <PropiedadCard propiedad={propiedad} />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div class="text-center py-16" data-animate>
+                    <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                        No hay propiedades destacadas
+                    </h3>
+                    <p class="text-gray-600 mb-6">
+                        Próximamente agregaremos propiedades destacadas a
+                        nuestra selección.
+                    </p>
+                    <a href="/propiedades" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                        Ver todas las propiedades
+                        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            )
+        }
+
+        {
+            propiedades.length > 0 && (
+                <div class="text-center mt-12" data-animate>
+                    <a href="/propiedades" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        Ver todas las propiedades
+                        <svg class="ml-3 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <p class="mt-4 text-gray-600">
+                        +{propiedades.length > 100 ? '500' : '50'} propiedades disponibles
+                    </p>
+                </div>
+            )
+        }
+    </div>
+</section>

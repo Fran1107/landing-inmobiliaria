@@ -1,0 +1,178 @@
+
+<section id="buscar" class="py-20 bg-gradient-to-b from-gray-300 to-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Title -->
+            <div class="text-center mb-12" data-animate>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Encuentra tu propiedad ideal
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Utiliza nuestros filtros avanzados para encontrar
+                    exactamente lo que buscas
+                </p>
+            </div>
+
+            <!-- Search Form -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-gray-100" data-animate>
+                <form class="space-y-6">
+                    <!-- Main Search Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <!-- Tipo de Propiedad -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Tipo de Propiedad</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Todos los tipos</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Departamento">Departamento</option>
+                                <option value="Terreno">Terreno</option>
+                            </select>
+                        </div>
+
+                        <!-- Operación -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Operación</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Venta y Alquiler</option>
+                                <option value="Venta">Venta</option>
+                                <option value="Alquiler">Alquiler</option>
+                            </select>
+                        </div>
+
+                        <!-- Ubicación -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Ubicación</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Todas las zonas</option>
+                                <option value="Salta">Salta</option>
+                                <option value="San Lorenzo">San Lorenzo</option>
+                                <option value="Cerrillos">Cerrillos</option>
+                                <option value="El Tipal">El Tipal</option>
+                                <option value="San Luis">San Luis</option>
+                                <option value="Grand Bourg">Grand Bourg</option>
+                            </select>
+                        </div>
+
+                        <!-- Precio -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Precio Máximo</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Sin límite</option>
+                                <option value="100000">USD 100.000</option>
+                                <option value="200000">USD 200.000</option>
+                                <option value="300000">USD 300.000</option>
+                                <option value="500000">USD 500.000</option>
+                                <option value="1000000">USD 1.000.000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Filtros avanzados -->
+                    <div class="border-t border-gray-200 pt-6">
+                        <button type="button" id="toggle-filters" class="flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                            <span>Filtros avanzados</span>
+                            <svg class="ml-2 w-4 h-4 transform transition-transform" id="filter-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Filtros avanzados (Hidden by default) -->
+                    <div id="advanced-filters" class="hidden space-y-6 border-t border-gray-200 pt-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Habitaciones -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">Habitaciones</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                    <option value="">Cualquier cantidad</option>
+                                    <option value="1">1 habitación</option>
+                                    <option value="2">2 habitaciones</option>
+                                    <option value="3">3 habitaciones</option>
+                                    <option value="4">4+ habitaciones</option>
+                                </select>
+                            </div>
+
+                            <!-- Baños -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">Baños</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                    <option value="">Cualquier cantidad</option>
+                                    <option value="1">1 baño</option>
+                                    <option value="2">2 baños</option>
+                                    <option value="3">3+ baños</option>
+                                </select>
+                            </div>
+
+                            <!-- Superficie -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700">Superficie mín. (m²)</label>
+                                <input type="number" placeholder="Ej: 350" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"/>
+                            </div>
+                        </div>
+
+                        <!-- Comodidades -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-medium text-gray-700">Comodidades</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                                    <span class="text-sm text-gray-700">Cochera</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                                    <span class="text-sm text-gray-700">Pileta</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                                    <span class="text-sm text-gray-700">Jardín</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                                    <span class="text-sm text-gray-700">Balcón</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                                    <span class="text-sm text-gray-700">Terraza</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"/>
+                                    <span class="text-sm text-gray-700">Seguridad</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search Button -->
+                    <div class="flex justify-center pt-6">
+                        <button type="submit" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            <svg class="mr-3 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            Buscar Propiedades
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleButton = document.getElementById('toggle-filters')
+        const advancedFilters = document.getElementById('advanced-filters')
+        const filterIcon = document.getElementById('filter-icon')
+
+        toggleButton?.addEventListener('click', () => {
+            const isHidden = advancedFilters?.classList.contains('hidden')
+
+            if (isHidden) {
+                advancedFilters?.classList.remove('hidden')
+                filterIcon?.classList.add('rotate-180')
+            } else {
+                advancedFilters?.classList.add('hidden')
+                filterIcon?.classList.remove('rotate-180')
+            }
+        })
+    })
+</script>

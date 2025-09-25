@@ -1,0 +1,493 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import ImageGallery from '../../components/ImageGallery.astro'
+import ContactAgent from '../../components/ContactAgent.astro'
+
+export async function getStaticPaths() {
+    const propiedades = await getCollection('propiedades')
+    return propiedades.map((propiedad) => ({
+        params: { id: propiedad.slug },
+        props: { propiedad },
+    }))
+}
+
+type Props = {
+    propiedad: CollectionEntry<'propiedades'>
+}
+
+const { propiedad } = Astro.props
+const { data, render } = propiedad
+const { Content } = await render()
+
+// Formatear precio
+const formatPrecio = (precio: number, moneda: string) => {
+    const formatter = new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: moneda,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    })
+    return formatter.format(precio)
+}
+
+// Función para capitalizar
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+
+// Formatear fecha
+const formatFecha = (fecha: Date) => {
+    return fecha.toLocaleDateString('es-AR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    })
+}
+---
+
+<Layout
+    title={`${data.titulo} - InmoPlus`}
+    description={`${data.titulo} en ${data.ubicacion.localidad}. ${formatPrecio(data.precio, data.moneda)}. ${data.caracteristicas.habitaciones} hab, ${data.caracteristicas.baños} baños, ${data.caracteristicas.superficieTotal}m².`}
+>
+    <Header />
+
+    <main class="pt-20">
+        <!-- Breadcrumb -->
+        <div class="bg-gray-50 py-4">
+            <div class="container mx-auto px-4">
+                <nav class="flex" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                        <li class="inline-flex items-center">
+                            <a
+                                href="/"
+                                class="text-gray-700 hover:text-blue-600 transition-colors"
+                            >
+                                Inicio
+                            </a>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <svg
+                                    class="w-6 h-6 text-gray-400"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                <span
+                                    class="ml-1 text-gray-500 truncate"
+                                >
+                                    Propiedades
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <svg
+                                    class="w-6 h-6 text-gray-400"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="ml-1 text-gray-500 truncate"
+                                    >{data.titulo}</span
+                                >
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Property Header -->
+        <section class="py-8 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl">
+                    <!-- Title and Status -->
+                    <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold ${
+                                        data.estado == 'venta'
+                                            ? 'bg-green-100 text-green-800'
+                                            : data.estado == 'alquiler'
+                                            ? 'bg-blue-100 text-blue-800'
+                                            : 'bg-gray-100 text-gray-800'
+                                    }`}
+                                >
+                                    {capitalize(data.estado)}
+                                </span>
+                                {
+                                    data.destacado && (
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800">
+                                            ⭐ Destacado
+                                        </span>
+                                    )
+                                }
+                            </div>
+                            <h1
+                                class="text-2xl md:text-4xl font-bold text-gray-900 mb-3"
+                            >
+                                {data.titulo}
+                            </h1>
+                            <div class="flex items-center text-gray-600 mb-4">
+                                <svg
+                                    class="w-5 h-5 mr-2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                    ></path>
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                    ></path>
+                                </svg>
+                                <span
+                                    >{data.ubicacion.direccion}, {
+                                        data.ubicacion.localidad
+                                    }, {data.ubicacion.provincia}</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="text-right">
+                            <div
+                                class="text-3xl md:text-4xl font-bold text-blue-600 mb-2"
+                            >
+                                {formatPrecio(data.precio, data.moneda)}
+                                {
+                                    data.estado === 'alquiler' && (
+                                        <span class="text-lg font-normal text-gray-600">
+                                            /mes
+                                        </span>
+                                    )
+                                }
+                            </div>
+                            {
+                                data.expensas && (
+                                    <div class="text-sm text-gray-600">
+                                        + ${data.expensas.toLocaleString()}{' '}
+                                        expensas
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div
+                        class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-200 rounded-xl"
+                    >
+                        {
+                            data.caracteristicas.habitaciones > 0 && (
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-gray-900">
+                                        {data.caracteristicas.habitaciones}
+                                    </div>
+                                    <div class="text-sm text-gray-600">
+                                        Habitaciones
+                                    </div>
+                                </div>
+                            )
+                        }
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900">
+                                {data.caracteristicas.baños}
+                            </div>
+                            <div class="text-sm text-gray-600">Baños</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900">
+                                {data.caracteristicas.superficieTotal}
+                            </div>
+                            <div class="text-sm text-gray-600">m² totales</div>
+                        </div>
+                        <div class="text-center">
+                            <div
+                                class="text-2xl font-bold text-gray-900 capitalize"
+                            >
+                                {data.caracteristicas.tipo}
+                            </div>
+                            <div class="text-sm text-gray-600">Tipo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Gallery -->
+        <ImageGallery
+            imagenPrincipal={data.imagenes.principal}
+            galeria={data.imagenes.galeria}
+            titulo={data.titulo}
+        />
+
+        <!-- Property Details -->
+        <section class="py-12 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <!-- Main Content -->
+                    <div class="lg:col-span-2 space-y-8">
+                        <!-- Description -->
+                        <div class="prose prose-lg max-w-none">
+                            <Content />
+                        </div>
+
+                        <!-- Features -->
+                        <div class="bg-gray-50 rounded-xl p-6">
+                            <h3
+                                class="text-xl font-semibold text-gray-900 mb-6"
+                            >
+                                Características
+                            </h3>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <div class="flex items-center">
+                                    <svg
+                                        class="w-5 h-5 text-green-500 mr-3"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="text-gray-700"
+                                        >{data.caracteristicas.superficieTotal}m²
+                                        totales</span
+                                    >
+                                </div>
+
+                                {
+                                    data.caracteristicas.metrosCubiertos && (
+                                        <div class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 text-green-500 mr-3"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                />
+                                            </svg>
+                                            <span class="text-gray-700">
+                                                {data.caracteristicas.metrosCubiertos}m²
+                                                cubiertos
+                                            </span>
+                                        </div>
+                                    )
+                                }
+
+                                {
+                                    data.caracteristicas.cochera && (
+                                        <div class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 text-green-500 mr-3"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                />
+                                            </svg>
+                                            <span class="text-gray-700">
+                                                Cochera
+                                            </span>
+                                        </div>
+                                    )
+                                }
+
+                                {
+                                    data.caracteristicas.jardin && (
+                                        <div class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 text-green-500 mr-3"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                />
+                                            </svg>
+                                            <span class="text-gray-700">
+                                                Jardín
+                                            </span>
+                                        </div>
+                                    )
+                                }
+
+                                {
+                                    data.caracteristicas.pileta && (
+                                        <div class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 text-green-500 mr-3"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                />
+                                            </svg>
+                                            <span class="text-gray-700">
+                                                Pileta
+                                            </span>
+                                        </div>
+                                    )
+                                }
+
+                                {
+                                    data.caracteristicas.balcon && (
+                                        <div class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 text-green-500 mr-3"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                />
+                                            </svg>
+                                            <span class="text-gray-700">
+                                                Balcón
+                                            </span>
+                                        </div>
+                                    )
+                                }
+
+                                {
+                                    data.caracteristicas.terraza && (
+                                        <div class="flex items-center">
+                                            <svg
+                                                class="w-5 h-5 text-green-500 mr-3"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"
+                                                />
+                                            </svg>
+                                            <span class="text-gray-700">
+                                                Terraza
+                                            </span>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="lg:col-span-1">
+                        <div class="sticky top-24 space-y-6">
+                            <!-- Contact Agent -->
+                            {
+                                data.agente && (
+                                    <ContactAgent
+                                        agente={data.agente}
+                                        propiedadId={propiedad.slug}
+                                    />
+                                )
+                            }
+
+                            <!-- Quick Actions
+                            <div  class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                                <h3
+                                    class="text-lg font-semibold text-gray-900 mb-4"
+                                >
+                                    Acciones rápidas
+                                </h3>
+                                <div class="space-y-3">
+                                    <button
+                                        class="w-full flex items-center justify-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                                    >
+                                        <svg
+                                            class="w-5 h-5 mr-2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                                            ></path>
+                                        </svg>
+                                        Guardar en favoritos
+                                    </button>
+                                    <button
+                                        class="w-full flex items-center justify-center px-4 py-3 border-2 border-gray-300 hover:border-gray-400 text-gray-700 rounded-lg transition-colors"
+                                    >
+                                        <svg
+                                            class="w-5 h-5 mr-2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+                                            ></path>
+                                        </svg>
+                                        Compartir
+                                    </button>
+                                    <button
+                                        class="w-full flex items-center justify-center px-4 py-3 border-2 border-gray-300 hover:border-gray-400 text-gray-700 rounded-lg transition-colors"
+                                    >
+                                        <svg
+                                            class="w-5 h-5 mr-2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                                            ></path>
+                                        </svg>
+                                        Imprimir
+                                    </button>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+</Layout>

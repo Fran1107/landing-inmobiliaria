@@ -1,0 +1,173 @@
+{
+  "$ref": "#/definitions/propiedades",
+  "definitions": {
+    "propiedades": {
+      "type": "object",
+      "properties": {
+        "titulo": {
+          "type": "string"
+        },
+        "precio": {
+          "type": "number"
+        },
+        "moneda": {
+          "type": "string",
+          "enum": [
+            "USD",
+            "ARS"
+          ]
+        },
+        "ubicacion": {
+          "type": "object",
+          "properties": {
+            "direccion": {
+              "type": "string"
+            },
+            "localidad": {
+              "type": "string"
+            },
+            "provincia": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "direccion",
+            "localidad",
+            "provincia"
+          ],
+          "additionalProperties": false
+        },
+        "caracteristicas": {
+          "type": "object",
+          "properties": {
+            "habitaciones": {
+              "type": "number"
+            },
+            "baños": {
+              "type": "number"
+            },
+            "superficieTotal": {
+              "type": "number"
+            },
+            "metrosCubiertos": {
+              "type": "number"
+            },
+            "tipo": {
+              "type": "string",
+              "enum": [
+                "Terreno",
+                "Casa",
+                "Departamento"
+              ]
+            },
+            "cochera": {
+              "type": "boolean",
+              "default": false
+            },
+            "jardin": {
+              "type": "boolean",
+              "default": false
+            },
+            "pileta": {
+              "type": "boolean",
+              "default": false
+            },
+            "balcon": {
+              "type": "boolean",
+              "default": false
+            },
+            "terraza": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "habitaciones",
+            "baños",
+            "superficieTotal",
+            "metrosCubiertos",
+            "tipo"
+          ],
+          "additionalProperties": false
+        },
+        "imagenes": {
+          "type": "object",
+          "properties": {
+            "principal": {
+              "type": "string"
+            },
+            "galeria": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "principal",
+            "galeria"
+          ],
+          "additionalProperties": false
+        },
+        "estado": {
+          "type": "string",
+          "enum": [
+            "venta",
+            "alquiler",
+            "vendido",
+            "alquilado"
+          ]
+        },
+        "destacado": {
+          "type": "boolean",
+          "default": false
+        },
+        "descripcion": {
+          "type": "string"
+        },
+        "agente": {
+          "type": "object",
+          "properties": {
+            "nombre": {
+              "type": "string"
+            },
+            "telefono": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "foto": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "nombre",
+            "telefono",
+            "email"
+          ],
+          "additionalProperties": false
+        },
+        "expensas": {
+          "type": "number"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "titulo",
+        "precio",
+        "moneda",
+        "ubicacion",
+        "caracteristicas",
+        "imagenes",
+        "estado",
+        "agente"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

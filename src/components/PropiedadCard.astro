@@ -1,0 +1,183 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { Car, TreePine, Waves, Building2, Landmark} from '@lucide/astro'
+
+interface Props {
+    propiedad: CollectionEntry<'propiedades'>
+}
+
+const { propiedad } = Astro.props
+const { data } = propiedad
+const { caracteristicas } = data
+
+// Formatear precio
+const formatPrecio = (precio: number, moneda: string) => {
+    const formatter = new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: moneda,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    })
+    return formatter.format(precio)
+}
+
+// Función para capitalizar primera letra
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+---
+
+<article class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200 transform hover:-translate-y-2">
+    <!-- Image Container -->
+    <div class="relative overflow-hidden">
+        <a href={`/propiedades/${propiedad.slug}`} class="block">
+            <img src={data.imagenes.principal} alt={data.titulo} class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+
+            <!-- Estado Badge -->
+            <div class="absolute top-4 left-4">
+                <span
+                    class={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold ${
+                        data.estado === 'venta'
+                            ? 'bg-green-100 text-green-800'
+                            : data.estado === 'alquiler'
+                            ? 'bg-blue-100 text-blue-800 '
+                            : 'bg-gray-100 text-gray-800'
+                    }`}
+                >
+                    {capitalize(data.estado)}
+                </span>
+            </div>
+
+            <!-- Destacado Badge -->
+            {
+                data.destacado && (
+                    <div class="absolute top-4 right-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
+                            ⭐ Destacado
+                        </span>
+                    </div>
+                )
+            }
+
+            <!-- Precio Badge -->
+            <div class="absolute bottom-4 left-4">
+                <span
+                    class="inline-flex items-center px-4 py-2 rounded-lg bg-white/90 backdrop-blur-sm text-lg font-bold text-gray-900"
+                >
+                    {formatPrecio(data.precio, data.moneda)}
+                    {
+                        data.estado === 'alquiler' && (
+                            <span class="text-sm font-normal text-gray-600 ml-1">
+                                /mes
+                            </span>
+                        )
+                    }
+                </span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6">
+        <!-- Título -->
+        <a href={`/propiedades/${propiedad.slug}`} class="block group-hover:text-blue-600 transition-colors">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 leading-tight">
+                {data.titulo}
+            </h3>
+        </a>
+
+        <!-- Ubicación -->
+        <div class="flex items-center text-gray-600 mb-4">
+            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span class="text-sm truncate">
+                {data.ubicacion.localidad}, {data.ubicacion.provincia}
+            </span>
+        </div>
+
+        <!-- Características -->
+        <div class="grid grid-cols-4 gap-4 mb-4 text-sm">
+            {
+                data.caracteristicas.habitaciones > 0 && (
+                    <div class="flex items-center text-gray-700">
+                        <svg class="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v0"></path>
+                        </svg>
+                        <span>{data.caracteristicas.habitaciones} hab</span>
+                    </div>
+                )
+            }
+
+            <div class="flex items-center text-gray-700">
+                <svg class="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M10.5 2.5L12 4l1.5-1.5M6 10h12v11H6z"
+                    ></path>
+                </svg>
+                <span>{data.caracteristicas.baños} baños</span>
+            </div>
+
+            <div class="flex items-center text-gray-700">
+                <svg class="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l4 4m8-8h4v4m0-4l-4 4m4 8v4m0 0h-4m4 0l-4-4M4 16v4m0 0h4m-4 0l4-4"></path>
+                </svg>
+                <span>Superficie: {data.caracteristicas.superficieTotal}m²</span>
+            </div>
+
+            <div class="flex items-center text-gray-700">
+                <svg class="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l4 4m8-8h4v4m0-4l-4 4m4 8v4m0 0h-4m4 0l-4-4M4 16v4m0 0h4m-4 0l4-4"></path>
+                </svg>
+                <span>Metros cubiertos: {data.caracteristicas.metrosCubiertos}m²</span>
+            </div>
+        </div>
+
+        <!-- Comodidades Icons -->
+        <div class="grid grid-cols-5 gap-2 mb-4 text-gray-700">
+            {caracteristicas.cochera && (
+                <span title="Cochera"><Car size={20} class="text-gray-600" /></span>
+            )}
+        
+            {caracteristicas.jardin && (
+                <span title="Jardín"><TreePine size={20} class="text-gray-600" /></span>
+            )}
+        
+            {caracteristicas.pileta && (
+                <span title="Pileta"><Waves size={20} class="text-gray-600" /></span>
+            )}
+        
+            {caracteristicas.balcon && (
+                <span title="Balcón"><Building2 size={20} class="text-gray-600" /></span>
+            )}
+        
+            {caracteristicas.terraza && (
+                <span title="Terraza"><Landmark size={20} class="text-gray-600" /></span>
+            )}
+        </div>
+
+        <!-- CTA Button -->
+        <div class="flex items-center justify-between">
+            <a href={`/propiedades/${propiedad.slug}`} class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors group">
+                Ver detalles
+                <svg class="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </a>
+
+            <!-- Tipo de propiedad -->
+            <span class="text-sm font-bold text-white capitalize bg-blue-400 px-2 py-1 rounded">
+                {data.caracteristicas.tipo}
+            </span>
+        </div>
+    </div>
+</article>
+
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>

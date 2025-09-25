@@ -1,11 +1,37 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import HeroSection from '../components/HeroSection.astro'
+import SearchSection from '../components/SearchSection.astro'
+import PropiedadesDestacadas from '../components/PropiedadesDestacadas.astro'
+import WhyChooseUs from '../components/WhyChooseUs.astro'
+import Testimonials from '../components/Testimonials.astro'
+import Footer from '../components/Footer.astro'
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { getCollection } from 'astro:content'
+import { ClientRouter } from 'astro:transitions'
+
+// Obtener propiedades destacadas
+const todasLasPropiedades = await getCollection('propiedades')
+const propiedadesDestacadas = todasLasPropiedades
+    .filter((propiedad) => propiedad.data.destacado)
+    .slice(0, 6)
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+    title="InmoPlus - Encuentra tu hogar ideal"
+    description="Inmobiliaria líder en Argentina. Miles de propiedades en venta y alquiler. Encuentra tu hogar ideal con la mejor atención personalizada."
+>
+    <ClientRouter />
+    <Header />
+
+    <main>
+        <HeroSection />
+        <SearchSection />
+        <PropiedadesDestacadas propiedades={propiedadesDestacadas} />
+        <WhyChooseUs />
+        <Testimonials /> 
+    </main>
+
+    <Footer />
 </Layout>

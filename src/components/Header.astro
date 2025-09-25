@@ -1,0 +1,88 @@
+<header class="fixed top-0 w-full bg-white/80 backdrop-blur-sm border-b border-gray-200 z-50">
+    <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="/" class="flex items-center space-x-2 font-bold text-xl text-blue-900">
+            <div class="w-10 h-10 bg-gradient-to-br from-blue-300 to-blue-800 rounded-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+                    <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                </svg>
+            </div>
+            <span>InmoPlus</span>
+        </a>
+
+        <!-- Barra de navegacion -->
+        <div class="hidden md:flex items-center space-x-8">
+            <a href="#inicio" class="text-gray-700 hover:text-blue-600 font-bold transition-colors">
+                Inicio
+            </a> 
+            <a href="#buscar" class="text-gray-700 hover:text-blue-600 font-bold transition-colors">
+                Buscar
+            </a>
+            <a href="#propiedades" class="text-gray-700 hover:text-blue-600 font-bold transition-colors">
+                Propiedades
+            </a>
+            <a href="#servicios" class="text-gray-700 hover:text-blue-600 font-bold transition-colors">
+                Servicios
+            </a>
+            <a href="#testimonios" class="text-gray-700 hover:text-blue-600 font-bold transition-colors">
+                Testimonios
+            </a>
+            <a href="#contacto" class="text-gray-700 hover:text-blue-600 font-bold transition-colors">
+                Contacto
+            </a>
+        </div>
+
+        <!-- Boton de Contacto -->
+        <div class="hidden md:flex items-center space-x-4">
+            <a href="#contacto" class="btn-consultar bg-blue-600 text-white px-6 py-2 rounded-lg font-bold shadow-sm relative overflow-hidden">
+                Consultar
+            </a>
+        </div>
+
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200 shadow-lg">
+        <div class="container mx-auto px-4 py-4 space-y-4">
+            <a href="/" class="block text-gray-700 hover:text-blue-600 font-bold transition-colors py-2">Inicio</a>
+            <a href="#buscar" class="block text-gray-700 hover:text-blue-600 font-bold transition-colors py-2">Buscar</a>
+            <a href="#propiedades" class="block text-gray-700 hover:text-blue-600 font-bold transition-colors py-2">Propiedades</a>
+            <a href="#servicios" class="block text-gray-700 hover:text-blue-600 font-bold transition-colors py-2">Servicios</a>
+            <a href="#testimonios" class="block text-gray-700 hover:text-blue-600 font-bold transition-colors py-2">Testimonios</a>
+            <a href="#contacto" class="block text-gray-700 hover:text-blue-600 font-bold transition-colors py-2">Contacto</a>
+            <div class="pt-4 border-t border-gray-200">
+                <a href="#contacto" class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors font-medium">Consultar</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuButton = document.getElementById('mobile-menu-button')
+        const mobileMenu = document.getElementById('mobile-menu')
+
+        mobileMenuButton?.addEventListener('click', () => {
+            mobileMenu?.classList.toggle('hidden')
+        })
+
+        // Cerrar menú móvil al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (
+                !mobileMenuButton?.contains(e.target as Node) &&
+                !mobileMenu?.contains(e.target as Node)
+            ) {
+                mobileMenu?.classList.add('hidden')
+            }
+        })
+    })
+
+    
+</script>

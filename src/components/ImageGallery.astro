@@ -1,0 +1,291 @@
+---
+interface Props {
+    imagenPrincipal: string
+    galeria: string[]
+    titulo: string
+}
+
+const { imagenPrincipal, galeria, titulo } = Astro.props
+const todasLasImagenes = [imagenPrincipal, ...galeria]
+---
+
+<section class="bg-white">
+    <div class="container mx-auto px-4">
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-4 grid-rows-2 gap-2 h-96 md:h-[500px] rounded-xl overflow-hidden">
+            <!-- Main Image -->
+            <div class="col-span-4 md:col-span-2 row-span-2 relative group cursor-pointer" onclick="openModal(0)">
+                <img
+                    src={imagenPrincipal}
+                    alt={`${titulo} - Imagen principal`}
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="eager"
+                />
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
+                </div>
+                <div  class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span class="inline-flex items-center px-3 py-1 bg-white/90 backdrop-blur-sm text-sm font-medium text-gray-900 rounded-lg">
+                        <svg
+                            class="w-4 h-4 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            ></path>
+                        </svg>
+                        Ver imagen
+                    </span>
+                </div>
+            </div>
+
+            <!-- Gallery Images -->
+            {
+                galeria.slice(0, 4).map((imagen, index) => (
+                    <div
+                        class={`relative group cursor-pointer overflow-hidden ${
+                            index === 3 && galeria.length > 4 ? 'relative' : ''
+                        }`}
+                        onclick={`openModal(${index + 1})`}
+                    >
+                        <img
+                            src={imagen}
+                            alt={`${titulo} - Imagen ${index + 2}`}
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy"
+                        />
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+
+                        {index === 3 && galeria.length > 4 && (
+                            <div class="absolute inset-0 bg-black/60 flex items-center justify-center">
+                                <span class="text-white text-xl font-semibold">
+                                    +{galeria.length - 4} más
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                ))
+            }
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center mt-6">
+            <button
+                onclick="openModal(0)"
+                class="inline-flex items-center px-6 py-3 bg-gray-900 hover:bg-black text-white rounded-lg font-medium transition-colors"
+            >
+                <svg
+                    class="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    ></path>
+                </svg>
+                Ver todas las fotos ({todasLasImagenes.length})
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div
+    id="imageModal"
+    class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-sm"
+>
+    <div class="relative w-full h-full flex items-center justify-center p-4">
+        <!-- Close Button -->
+        <button
+            onclick="closeModal()"
+            class="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+        >
+            <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <!-- Navigation -->
+        <button
+            id="prevBtn"
+            onclick="prevImage()"
+            class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+        >
+            <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+
+        <button
+            id="nextBtn"
+            onclick="nextImage()"
+            class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+        >
+            <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+
+        <!-- Image Container -->
+        <div
+            class="max-w-4xl max-h-full w-full h-full flex items-center justify-center"
+        >
+            <img
+                id="modalImage"
+                src=""
+                alt=""
+                class="max-w-full max-h-full object-contain rounded-lg"
+            />
+        </div>
+
+        <!-- Image Counter -->
+        <div
+            class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-lg"
+        >
+            <span id="imageCounter">1 / {todasLasImagenes.length}</span>
+        </div>
+
+        <!-- Thumbnails -->
+        <div
+            class="absolute bottom-20 left-1/2 -translate-x-1/2 max-w-full overflow-x-auto"
+        >
+            <div class="flex space-x-2 px-4" id="thumbnails">
+                {
+                    todasLasImagenes.map((imagen, index) => (
+                        <button
+                            onclick={`goToImage(${index})`}
+                            class="flex-shrink-0 w-16 h-12 rounded overflow-hidden opacity-60 hover:opacity-100 transition-opacity border-2 border-transparent"
+                            id={`thumb-${index}`}
+                        >
+                            <img
+                                src={imagen}
+                                alt={`Thumbnail ${index + 1}`}
+                                class="w-full h-full object-cover"
+                            />
+                        </button>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script define:vars={{ todasLasImagenes, titulo }}>
+    let currentImageIndex = 0
+    const modal = document.getElementById('imageModal')
+    const modalImage = document.getElementById('modalImage')
+    const imageCounter = document.getElementById('imageCounter')
+
+    function openModal(index) {
+        currentImageIndex = index
+        updateModalImage()
+        modal.classList.remove('hidden')
+        document.body.style.overflow = 'hidden'
+    }
+
+    // Hacerla accesible globalmente
+    window.openModal = openModal
+    window.closeModal = closeModal
+    window.nextImage = nextImage
+    window.prevImage = prevImage
+    window.goToImage = goToImage
+
+    function closeModal() {
+        modal.classList.add('hidden')
+        document.body.style.overflow = 'auto'
+    }
+
+    function updateModalImage() {
+        modalImage.src = todasLasImagenes[currentImageIndex]
+        modalImage.alt = `${titulo} - Imagen ${currentImageIndex + 1}`
+        imageCounter.textContent = `${currentImageIndex + 1} / ${todasLasImagenes.length}`
+
+        // Update thumbnails
+        document.querySelectorAll('[id^="thumb-"]').forEach((thumb, index) => {
+            thumb.classList.toggle('border-white', index === currentImageIndex)
+            thumb.classList.toggle('opacity-100', index === currentImageIndex)
+            thumb.classList.toggle('opacity-60', index !== currentImageIndex)
+        })
+    }
+
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % todasLasImagenes.length
+        updateModalImage()
+    }
+
+    function prevImage() {
+        currentImageIndex =
+            (currentImageIndex - 1 + todasLasImagenes.length) %
+            todasLasImagenes.length
+        updateModalImage()
+    }
+
+    function goToImage(index) {
+        currentImageIndex = index
+        updateModalImage()
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('hidden')) {
+            switch (e.key) {
+                case 'Escape':
+                    closeModal()
+                    break
+                case 'ArrowLeft':
+                    prevImage()
+                    break
+                case 'ArrowRight':
+                    nextImage()
+                    break
+            }
+        }
+    })
+
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal()
+        }
+    })
+</script>

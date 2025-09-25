@@ -1,46 +1,32 @@
-# Astro Starter Kit: Basics
+# 🏡 Land Inmobiliaria - Landing Page
 
-```sh
-npm create astro@latest -- --template basics
-```
+Este es un proyecto personal de una **landing page inmobiliaria** desarrollado con [Astro](https://astro.build/).  
+El objetivo es mostrar propiedades destacadas y secciones informativas de manera rápida, moderna y optimizada para SEO.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-## 🚀 Project Structure
+## ✨ Características
+- 🌐 **Landing page responsive** para inmobiliaria.  
+- 🏘️ **Listado de propiedades** con páginas dinámicas generadas desde Markdown.  
+- 🖼️ **Galería de imágenes** de propiedades y secciones.  
+- ⚡ **Rendimiento optimizado** con Astro y carga de imágenes.  
+- 🎨 **Estilos con Tailwind CSS** (via `global.css`).  
+- 📂 **Arquitectura modular** con componentes reutilizables.  
 
-Inside of your Astro project, you'll see the following folders and files:
+---
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## 📂 Estructura del proyecto
+land-inmobiliaria/
+├── public/ # Imágenes públicas y favicon
+│ └── images/ # Imágenes de propiedades y hero
+├── src/
+│ ├── assets/ # Recursos adicionales
+│ ├── components/ # Componentes Astro (Header, Footer, Cards, etc.)
+│ ├── content/ # Contenido en Markdown de propiedades
+│ ├── layouts/ # Layout base del sitio
+│ ├── pages/ # Rutas del proyecto (index, propiedades dinámicas)
+│ └── styles/ # Estilos globales
+├── .gitignore
+├── astro.config.mjs # Configuración de Astro
+├── package.json # Dependencias y scripts
+└── tsconfig.json / etc
